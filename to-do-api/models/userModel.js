@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   date: { type: Date, default: Date.now },
-  tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
+  //tasks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Task" }],
 });
 
 const User = mongoose.model("User", userSchema);
