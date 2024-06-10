@@ -4,18 +4,29 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const rateLimit = require("express-rate-limit");
+const taskRoutes = require("./routes/taskRoutes");
 
 require("dotenv").config();
 const server = express();
 const PORT = process.env.PORT || 5000;
 
 //add check
-mongoose.connect(process.env.CONNECTION_STRING);
+const connectDb = async () => {
+  try {
+    await mongoose.connect(process.env.CONNECTION_STRING);
+    console.log(`MongoDB Connected`.random.bold);
+  } catch (error) {
+    console.log(`Error: ${error.message}`.red);
+  }
+};
+
+connectDb();
 
 server.use(cors());
 server.use(express.json());
 
-server.use("/api/users", userRoutes);
+server.use("/api/user", userRoutes);
+server.use("/api/tasks", taskRoutes);
 
 server.listen(PORT, () => {
   console.log(`Listening to you on port: ${PORT}`.rainbow.bold);
