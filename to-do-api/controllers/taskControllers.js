@@ -3,8 +3,20 @@ require("dotenv").config();
 
 const getAllTasksByUser = async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.params.user._id });
+    const tasks = await Task.find({ user_id: req.params.user_id });
     res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getTaskById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const task = await Task.findById(id);
+    if (!task) {
+      res.status(404).json({ message: "Task not found" });
+    } else res.json(task);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -12,7 +24,13 @@ const getAllTasksByUser = async (req, res) => {
 
 const createTask = async (req, res) => {
   try {
-    const task = await new Task(req.body);
+    const { user_id } = req.params;
+    const taskInfo = {
+      task_name: req.body.task_name,
+      user_id: user_id,
+    };
+
+    const task = new Task(taskInfo);
     await task.save();
     res.status(201).json(task);
   } catch (error) {
@@ -34,6 +52,22 @@ const updateTask = async (req, res) => {
 };
 
 // Add the updateDayCompleted function here
+const updateDayCompleted = async (req, res) => {
+  const { id } = req.params.task_id;
+  try {
+    const task = await Task.findById(id);
+    if (!task) {
+      res.status(404).json({ message: "Task not found" });
+    } else {
+      task.date_completed = new Date();
+      task.is_completed = true;
+      await task.save();
+      res.json(task);
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 const deleteTask = async (req, res) => {
   const { id } = req.params;
@@ -47,4 +81,10 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { getAllTasksByUser, createTask, updateTask, deleteTask };
+module.exports = {
+  getAllTasksByUser,
+  createTask,
+  updateTask,
+  deleteTask,
+  updateDayCompleted,
+};

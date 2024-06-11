@@ -5,7 +5,7 @@ const checkToken = require("../middleware/checkToken");
 
 router
   .get("/", checkToken, userControllers.getAllUsers)
-  .post("/", userControllers.createUser);
+  .post("/register", userControllers.createUser);
 router
   .get("/:id", checkToken, userControllers.getUserById)
   .put("/:id", checkToken, userControllers.updateUser)
