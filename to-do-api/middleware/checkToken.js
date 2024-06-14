@@ -10,6 +10,7 @@ const checkToken = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized!" });
       }
+      //find out what this is doing
       req.userId = decoded.id;
       next();
     });

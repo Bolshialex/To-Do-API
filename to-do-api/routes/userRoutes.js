@@ -7,9 +7,9 @@ router
   .get("/", checkToken, userControllers.getAllUsers)
   .post("/register", userControllers.createUser);
 router
-  .get("/:id", checkToken, userControllers.getUserById)
-  .put("/:id", checkToken, userControllers.updateUser)
-  .delete("/:id", checkToken, userControllers.deleteUser);
+  .get("/:user_id", checkToken, userControllers.getUserById)
+  .put("/:user_id", checkToken, userControllers.updateUser)
+  .delete("/:user_id", checkToken, userControllers.deleteUser);
 router.post("/login", userControllers.loginUser);
 
 module.exports = router;

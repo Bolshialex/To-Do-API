@@ -20,7 +20,11 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.user_id);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -34,7 +38,9 @@ const createUser = async (req, res) => {
     if (userExists) {
       res.status(400).json({ message: "User already exists" });
     } else {
+      //find out what this is doing
       const SALT = Number(process.env.SALT);
+      //find out what this is doing
       const saltHash = await bcrypt.genSalt(SALT);
       const hashedPassword = await bcrypt.hash(password, saltHash);
       const user = await User.create({
@@ -55,12 +61,17 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { id } = req.params;
-  const { name, email, password } = req.body;
+  const id = req.params.user_id;
+  const { name, email } = req.body;
   try {
+    const emailExists = await User.findOne({ email });
+    if (emailExists) {
+      res.status(400).json({ message: "Email already exists" });
+      return;
+    }
     const user = await User.findByIdAndUpdate(
       id,
-      { name, email, password },
+      { name, email },
       { new: true }
     );
     if (!user) {
@@ -72,7 +83,7 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { id } = req.params;
+  const id = req.params.user_id;
   try {
     const user = await User.findByIdAndDelete(id);
     if (!user) {
