@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 //maybe add color
 const tagSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  tag_name: { type: String, required: true },
   user_id: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 

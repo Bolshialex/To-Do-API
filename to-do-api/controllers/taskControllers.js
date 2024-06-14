@@ -15,13 +15,12 @@ const getTaskById = async (req, res) => {
 };
 
 const createTask = async (req, res) => {
+  const user_id = req.params.user_id;
+  const taskInfo = {
+    task_name: req.body.task_name,
+    user_id: user_id,
+  };
   try {
-    const user_id = req.params.user_id;
-    const taskInfo = {
-      task_name: req.body.task_name,
-      user_id: user_id,
-    };
-
     const task = new Task(taskInfo);
     await task.save();
     res.status(201).json(task);
@@ -63,10 +62,10 @@ const updateDayCompleted = async (req, res) => {
   }
 };
 
-//Done?
 const getAllNotCompletedTasks = async (req, res) => {
+  const user_id = req.params.user_id;
   try {
-    const tasks = await Task.find({ is_completed: false });
+    const tasks = await Task.find({ user_id: user_id, is_completed: false });
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -98,7 +97,14 @@ const insertTag = async (req, res) => {
       return res.status(404).json({ message: "Tag not found" });
     }
 
-    task.tags.push(tag);
+    const existingTag = task.tags.find((tag) => tag._id.equals(tag_id));
+    if (existingTag) {
+      return res
+        .status(400)
+        .json({ message: "Tag already exists in the task" });
+    }
+
+    task.tags.push({ _id: tag_id, tag_name: tag.tag_name });
     await task.save();
 
     res.json(task);
@@ -131,10 +137,12 @@ const removeTag = async (req, res) => {
 
 const getTasksByTag = async (req, res) => {
   const { user_id, tag_id } = req.params;
-  //is this is prop
+
   try {
     const tasks = await Task.find({
       user_id: user_id,
+      //accesses the array and uses _id : tag_id as the condition
+      //array => anything that matches the condition
       tags: { $elemMatch: { _id: tag_id } },
     });
 

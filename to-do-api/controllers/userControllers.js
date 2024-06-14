@@ -38,9 +38,8 @@ const createUser = async (req, res) => {
     if (userExists) {
       res.status(400).json({ message: "User already exists" });
     } else {
-      //find out what this is doing
       const SALT = Number(process.env.SALT);
-      //find out what this is doing
+      //salt is the complexity of the password
       const saltHash = await bcrypt.genSalt(SALT);
       const hashedPassword = await bcrypt.hash(password, saltHash);
       const user = await User.create({

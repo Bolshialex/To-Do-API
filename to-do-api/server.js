@@ -21,10 +21,18 @@ const connectDb = async () => {
     console.log(`Error: ${error.message}`.red);
   }
 };
-
 connectDb();
 
-//find out what this is doing
+// 10 minute rate limit
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 100,
+  message: "Too many requests from this IP, please try again later.",
+  headers: true,
+});
+
+server.use(limiter);
+//Sets up Cross-Origin Resource Sharing. This allows the server to accept requests from the client
 server.use(cors());
 //Parsing the request JSON body
 server.use(express.json());
@@ -37,5 +45,3 @@ server.use("/api/tags", tagRoutes);
 server.listen(PORT, () => {
   console.log(`Listening to you on port: ${PORT}`.rainbow.bold);
 });
-
-//be clear about endpoints and routes

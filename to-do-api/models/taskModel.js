@@ -11,7 +11,7 @@ const taskSchema = new mongoose.Schema({
   tags: [
     {
       _id: { type: mongoose.Schema.Types.ObjectId, ref: "Tag" },
-      name: String,
+      tag_name: String,
     },
   ],
 });
