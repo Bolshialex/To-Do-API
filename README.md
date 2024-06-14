@@ -148,3 +148,4 @@ Important information: JWT authentication is accessed through the header named `
   Protected : TRUE
   ```
   Gets all tags by the user ID. Returns all tags created by the user.
+
