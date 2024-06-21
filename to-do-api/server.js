@@ -26,12 +26,12 @@ connectDb();
 // 10 minute rate limit
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
-  max: 100,
+  max: 1000,
   message: "Too many requests from this IP, please try again later.",
   headers: true,
 });
 
-server.use(limiter);
+//server.use(limiter);
 //Sets up Cross-Origin Resource Sharing. This allows the server to accept requests from the client
 server.use(cors());
 //Parsing the request JSON body
