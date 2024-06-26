@@ -1,0 +1,74 @@
+/* Start Register Card */
+
+/* General Styles for the Register Card */
+.register-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  background-color: #731209;
+  color: #d9d9d9;
+}
+
+/* Styles for Register Text Link */
+#register-text {
+  color: #f28444;
+  text-decoration: none;
+}
+
+#register-text:hover,
+#register-text:focus {
+  color: #f28444;
+  text-decoration: underline;
+}
+
+/* Styles for Register Header */
+#register-header {
+  font-weight: 700;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Styles for Register Form Container */
+.register-form-container {
+  padding: 40px;
+}
+
+@media (max-width: 600px) {
+  .register-form-container {
+    padding: 40px 5px;
+  }
+}
+
+/* Styles for Register Button */
+.register-btn {
+  background-color: #f28444;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-btn:hover,
+.register-btn:focus {
+  background-color: #f27141;
+  outline: none; /* Ensures focus state is clear */
+}
+
+/* End Register Card */
+
+/* Start Register Page */
+
+.register-page-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d9d9d9;
+}
+
+/* End Register Page */
