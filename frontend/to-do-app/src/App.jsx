@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
 import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage";
 import "./App.css";
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
         {/* Add a route for the login page */}
         <Route element={<RequireAuth />}>
           {/* Add a route for protected route */}
+          <Route path="home" element={<HomePage />} exact />
+          {/* Add a route for the home page */}
         </Route>
         <Route path="*" />
       </Route>

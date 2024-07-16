@@ -27,8 +27,8 @@
 /* Styles for Login Header */
 #login-header {
   font-weight: 700;
-  font-size: 2em;
-  margin-bottom: 20px;
+  font-size: 3em;
+  text-align: center;
 }
 
 /* Styles for Login Form Container */

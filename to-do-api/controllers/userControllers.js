@@ -32,28 +32,42 @@ const getUserById = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, username, email, password } = req.body;
+
   try {
+    // Check if user already exists with the provided email
     const userExists = await User.findOne({ email });
     if (userExists) {
-      res.status(400).json({ message: "User already exists" });
-    } else {
-      const SALT = Number(process.env.SALT);
-      //salt is the complexity of the password
-      const saltHash = await bcrypt.genSalt(SALT);
-      const hashedPassword = await bcrypt.hash(password, saltHash);
-      const user = await User.create({
-        name,
-        email,
-        password: hashedPassword,
-      });
-      res.status(201).json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: generateToken(user._id),
-      });
+      return res.status(409).json({ message: "Email is already in use." });
     }
+
+    // Check if username already exists
+    const usernameExists = await User.findOne({ username });
+    if (usernameExists) {
+      return res.status(409).json({ message: "Username is already in use." });
+    }
+
+    // Generate salt and hash the password
+    const SALT = Number(process.env.SALT);
+    const saltHash = await bcrypt.genSalt(SALT);
+    const hashedPassword = await bcrypt.hash(password, saltHash);
+
+    // Create new user
+    const user = await User.create({
+      name,
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Respond with user details and token
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      token: generateToken(user._id),
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -94,14 +108,15 @@ const deleteUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
         _id: user._id,
         name: user.name,
+        username: user.username,
         email: user.email,
         token: generateToken(user._id),
       });

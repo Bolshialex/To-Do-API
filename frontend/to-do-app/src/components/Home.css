@@ -1,0 +1,11 @@
+.task-info > p {
+  color: black;
+  font-size: 1.4rem;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 50vh;
+}
